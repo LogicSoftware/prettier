@@ -28,6 +28,20 @@ short_open =
     hello
   </BaseForm>
 
+short_forced_new_line =
+  <BaseForm
+    url="/auth/google"
+    method="GET">
+    hello
+  </BaseForm>
+
+no_new_line_if_there_is_only_one_attribute =
+  <BaseForm
+    url="/auth/google"
+  >
+    hello
+  </BaseForm>
+
 make_self_closing =
   <div>
     <BaseForm url="/auth/google" method="GET" colour="blue" size="large" submitLabel="Sign in with Google">

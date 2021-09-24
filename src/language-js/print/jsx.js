@@ -20,7 +20,7 @@ const {
   utils: { willBreak },
 } = require("../../document/index.js");
 
-const { getLast, getPreferredQuote } = require("../../common/util.js");
+const { getLast, getPreferredQuote, isNonEmptyArray } = require("../../common/util.js");
 const {
   isJsxNode,
   rawText,
@@ -596,7 +596,7 @@ function printJsxOpeningElement(path, options, print) {
 
   // We should print the opening element expanded if any prop value is a
   // string literal with newlines
-  const shouldBreak =
+  const hasMultilineStringAttr =
     node.attributes &&
     node.attributes.some(
       (attr) =>
@@ -604,6 +604,13 @@ function printJsxOpeningElement(path, options, print) {
         isStringLiteral(attr.value) &&
         attr.value.value.includes("\n")
     );
+
+  const isFirstAttrOnTheNextLine =
+    isNonEmptyArray(node.attributes) &&
+    node.attributes.length > 1 &&
+    node.attributes[0].loc.start.line !== node.loc.start.line;
+
+  const shouldBreak = hasMultilineStringAttr || isFirstAttrOnTheNextLine;
 
   return group(
     [
